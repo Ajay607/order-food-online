@@ -23,18 +23,27 @@
     margin-left: 10px;
     font-size: 14px;
 }
+.header + div {
+    margin-top: 20px;
+}
+.login{
+    margin-left: 10px;
+    padding: 2px 5px;
+}
 /* header css end */
 
 /* main-container css start */
 .main-container {
     padding: 0 15px;
 }
-.res-container{
+.res-container {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 20px;
-    
+}
+.filter .filter-btn {
+    cursor: pointer;
 }
 
 /* main-container css end */
@@ -60,9 +69,9 @@
     object-position: center;
     margin-top: 5px;
     border-radius: 5px;
-
 }
-.res-card h2,h4{
+.res-card h2,
+h4 {
     font-size: 10px;
     margin-top: 5px;
 }
