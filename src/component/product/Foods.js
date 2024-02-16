@@ -2,15 +2,20 @@ import { useEffect, useState } from "react";
 import restaurantList from "../../utils/mockData";
 import FoodCard from "./FoodCard";
 import { dataRes } from "../../../dummyData";
+import useOnlineStatus from "../../utils/useOnlineStatus";
 
 const Foods = () => {
     const [resData, setResData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
 
     let [searchQuery, setSearchQuery] = useState("");
-    console.log("filteredData",resData)
-    console.log("filteredData",filteredData)
+    const onlineStatus  = useOnlineStatus();
 
+    if(onlineStatus === false){
+        return(
+            <h1>Look like you are offline please check your internet connection</h1>
+        )
+    }
     
     const filterRes = () => {
         const restaurantListData = resData.filter((data) => data?.info?.avgRating > 4.2);

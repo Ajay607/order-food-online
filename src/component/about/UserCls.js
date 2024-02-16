@@ -12,6 +12,7 @@ class UserCls extends React.Component {
             }
         }
     }
+    
     async componentDidMount(){
         const data = await fetch("https://api.github.com/users/Ajay607")
         const json = await data.json();
