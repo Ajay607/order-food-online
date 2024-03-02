@@ -7,10 +7,14 @@ const RestaurentMenu = () => {
     const {resId} = useParams();
 
     const resInfo = useRestaurantMenu(resId);
+    console.log("resInfo",resInfo)
 
     if (resInfo === null) {
         return <>loading</>;
     }
+
+    const innnn = resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR
+    console.log('innnninnnn',innnn)
 
     const menuInfo = resInfo?.cards[0]?.card?.card?.info;
 
@@ -20,7 +24,7 @@ const RestaurentMenu = () => {
 
     const { name, cuisines, costForTwoMessage } = menuInfo;
 
-    const cardInfo = resInfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR.cards[1]?.card?.card;
+    const cardInfo = resInfo?.cards[3]?.groupedCard?.cardGroupMap?.REGULAR.cards[1]?.card;
     const { itemCards } = cardInfo;
 
     return (

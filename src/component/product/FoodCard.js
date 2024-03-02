@@ -34,4 +34,38 @@ const FoodCard = ({
     )
 }
 
+// Higher order component
+
+// input - FoodCard => FoodCardPromoted
+
+export const withPromotedLabel = (FoodCard) => {
+    return (
+        { cloudinaryImageId,
+            name,
+            cuisines,
+            area,
+            lastMileTravelString,
+            costForTwoString,
+            avgRating,
+            id
+        }
+    ) => {
+        return (
+            <a className='res-card' style={{ "position": "relative" }}>
+                <label style={{ "position": "absolute", "right": 0, "background": "rgba(255,255,255, 0.6)" }}>Promoted</label>
+                <FoodCard
+                    cloudinaryImageId={cloudinaryImageId}
+                    name={name}
+                    cuisines={cuisines}
+                    area={area}
+                    lastMileTravelString={lastMileTravelString}
+                    costForTwoString={costForTwoString}
+                    avgRating={avgRating}
+                    id={id}
+                />
+            </a>
+        )
+    }
+}
+
 export default FoodCard

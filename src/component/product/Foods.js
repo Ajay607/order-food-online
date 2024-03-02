@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import restaurantList from "../../utils/mockData";
-import FoodCard from "./FoodCard";
+import FoodCard, { withPromotedLabel } from "./FoodCard";
 import { dataRes } from "../../../dummyData";
 import useOnlineStatus from "../../utils/useOnlineStatus";
+
 
 const Foods = () => {
     const [resData, setResData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const onlineStatus = useOnlineStatus();
 
-    let [searchQuery, setSearchQuery] = useState("");
-    const onlineStatus  = useOnlineStatus();
-
-    if(onlineStatus === false){
-        return(
+    const FoodCardPromoted = withPromotedLabel(FoodCard);
+    if (onlineStatus === false) {
+        return (
             <h1>Look like you are offline please check your internet connection</h1>
         )
     }
-    
+
     const filterRes = () => {
         const restaurantListData = resData.filter((data) => data?.info?.avgRating > 4.2);
         setFilteredData(restaurantListData)
@@ -37,10 +38,10 @@ const Foods = () => {
         setResData(
             json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
         );
-        setFilteredData( json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
+        setFilteredData(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
         // if API will not work this will be used
         // setResData(dataRes)
-   
+
     };
 
 
@@ -65,8 +66,13 @@ const Foods = () => {
             </div>
             <div class="res-container">
                 {filteredData?.map((restaurant) => {
-                    console.log("resttttt", restaurant)
-                    return <FoodCard key={restaurant?.data?.id} {...restaurant.info} />;
+                    {/* make it promoted if rating is greater than 4 */ }
+                    console.log("restaurant", restaurant?.info?.avgRating)
+                    return (
+                        restaurant?.info?.avgRating > 4.1 ?
+                            <><FoodCard key={restaurant?.data?.id} {...restaurant.info} /></> :
+                            <><FoodCardPromoted key={restaurant?.data?.id} {...restaurant.info} /></>
+                    )
                 })}
             </div>
         </div>)
