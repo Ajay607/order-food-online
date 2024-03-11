@@ -1,51 +1,55 @@
-import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { REST_MENU_API } from "../../utils/constants";
 import useRestaurantMenu from "../../utils/useRestaurentMenu";
+import RestaurantCategory from "./RestaurantCategory";
+import { useState } from "react";
 
 const RestaurentMenu = () => {
-    const {resId} = useParams();
+    const { resId } = useParams();
+    const data = useRestaurantMenu(resId);
+    const [showSection , setShowSection] = useState(null);
 
-    const resInfo = useRestaurantMenu(resId);
-    console.log("resInfo",resInfo)
+    const categories =
+        data?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards;
+    const categoryItems = categories?.filter(
+        (c) =>
+            c.card?.card?.["@type"] ===
+            "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+    );
 
-    if (resInfo === null) {
-        return <>loading</>;
-    }
 
-    const innnn = resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR
-    console.log('innnninnnn',innnn)
+return !data ? (
+    <>Loading</>
+) :
+ (
+        <>
+            <div className='res_info'>
+                <div className='res_heading'>
+                    <h1> {data?.cards[0]?.card?.card?.info?.name}</h1>
+                </div>
+               
+                    <div className='res_name_rating'>
+                        <h2> {data?.cards[0]?.card?.card?.info?.name}</h2>
+                        <h4>{data?.cards[0]?.card?.card?.info?.avgRating} ★ </h4>
+                    </div>
+                <div className="details">
+                    <p> {data?.cards[0]?.card?.card?.info?.cuisines.join(",")} </p>
+                    <p>
+                        {data?.cards[0]?.card?.card?.info?.locality},{" "}
+                        {data?.cards[0]?.card?.card?.info?.city}{" "}
+                        <p> {data?.cards[0]?.card?.card?.info?.feeDetails?.message} </p>
+                    </p>
+                    <p>{data?.cards[0]?.card?.card?.info?.sla?.slaString} 🏍️</p>
+                </div>
 
-    const menuInfo = resInfo?.cards[0]?.card?.card?.info;
-
-    if (!menuInfo) {
-        return <>Menu information not available</>;
-    }
-
-    const { name, cuisines, costForTwoMessage } = menuInfo;
-
-    const cardInfo = resInfo?.cards[3]?.groupedCard?.cardGroupMap?.REGULAR.cards[1]?.card;
-    const { itemCards } = cardInfo;
-
-    return (
-        <div>
-            <h2>{name}</h2>
-            <h4>{cuisines.join("")}</h4>
-            <h3>{costForTwoMessage}</h3>
-            <ul>
-                {
-                    itemCards.map((data) => {
-                        return (
-                            <li key={data.card.info.id}>
-                                <span> {data.card.info.name}</span>
-                                <span> {data.card.info.price}</span>
-                            </li>
-                        )
-                    })
-                }
-
-            </ul>
-        </div>
+            </div>
+            <div className='res_menu'>
+                {categoryItems?.map((item,index) => (
+                    <RestaurantCategory category={item}
+                    showContent ={ index === showSection ? true : false} 
+                    setShowSection={ () => setShowSection(index)} />
+                ))}
+            </div>
+        </>
     );
 };
 

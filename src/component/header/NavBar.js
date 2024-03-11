@@ -5,7 +5,6 @@ import UserContext from '../../utils/UserContext'
 
 const NavBar = () => {
     const data = useContext(UserContext);
-    console.log("dataaaaaaa", data)
     return (
         <div className="header">
             <div className="logo-container">
